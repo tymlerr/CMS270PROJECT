@@ -32,7 +32,7 @@ public class gui implements ActionListener {
         System.out.println("stay signed in: " + staySignedIn.isSelected());
     }
 
-    // --- WELCOME SCREEN ---
+    // WELCOME SCREEN 
     public void showWelcomeScreen() {
         welcomeFrame.setLayout(null);
         welcomeFrame.setSize(400, 300);
@@ -62,7 +62,7 @@ public class gui implements ActionListener {
         welcomeFrame.setVisible(true);
     }
 
-    // --- LOGIN SCREEN (your original code) ---
+    // LOGIN SCREEN
     public void makeGui() {
         signInButton.addActionListener(this);
         
@@ -87,7 +87,7 @@ public class gui implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    // --- NEW USER SCREEN (simple placeholder) ---
+    // NEW USER SCREEN (place holder)
     public void showNewUserScreen() {
         JFrame newUserFrame = new JFrame("Create Account");
         newUserFrame.setLayout(null);
@@ -95,7 +95,7 @@ public class gui implements ActionListener {
         newUserFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         newUserFrame.setResizable(false);
 
-        JLabel msg = new JLabel("New User Registration (coming soon!)");
+        JLabel msg = new JLabel("New User Registration (To - Do)");
         msg.setBounds(80, 100, 250, 30);
         newUserFrame.add(msg);
 
