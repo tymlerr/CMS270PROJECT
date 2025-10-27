@@ -6,6 +6,7 @@ public class gui implements ActionListener {
     // main frames
     JFrame frame = new JFrame("Center for Rollins Clubs"); 
     JFrame welcomeFrame = new JFrame("Welcome!");
+    JFrame userTypeFrame = new JFrame("Select User Type");
 
     // login screen components
     JButton signInButton = new JButton("Sign In");
@@ -19,6 +20,14 @@ public class gui implements ActionListener {
     JButton newUserButton = new JButton("New User");
     JButton existingUserButton = new JButton("Existing User");
 
+    // user type screen components
+    JButton studentButton = new JButton("Student");
+    JButton professorButton = new JButton("Professor");
+    JLabel userTypePrompt = new JLabel("Are you a student or professor?");
+
+    // track user type (for later use if needed)
+    String userType = "";
+
     public static void main(String[] args) {
         gui app = new gui();
         app.showWelcomeScreen();
@@ -27,9 +36,10 @@ public class gui implements ActionListener {
     // Action listener for the sign-in button
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("username: " + usernameField.getText());
-        System.out.println("password: " + passwordField.getText());
-        System.out.println("stay signed in: " + staySignedIn.isSelected());
+        System.out.println("User type: " + userType);
+        System.out.println("Username: " + usernameField.getText());
+        System.out.println("Password: " + passwordField.getText());
+        System.out.println("Stay signed in: " + staySignedIn.isSelected());
     }
 
     // WELCOME SCREEN 
@@ -48,7 +58,7 @@ public class gui implements ActionListener {
         // button listeners
         existingUserButton.addActionListener(e -> {
             welcomeFrame.dispose(); // close welcome screen
-            makeGui(); // open login screen
+            showUserTypeScreen(); // go to new screen
         });
 
         newUserButton.addActionListener(e -> {
@@ -60,6 +70,36 @@ public class gui implements ActionListener {
         welcomeFrame.add(existingUserButton);
         welcomeFrame.add(newUserButton);
         welcomeFrame.setVisible(true);
+    }
+
+    // NEW SCREEN: STUDENT or PROFESSOR
+    public void showUserTypeScreen() {
+        userTypeFrame.setLayout(null);
+        userTypeFrame.setSize(400, 300);
+        userTypeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        userTypeFrame.setResizable(false);
+
+        userTypePrompt.setBounds(100, 50, 250, 30);
+        studentButton.setBounds(80, 120, 100, 40);
+        professorButton.setBounds(200, 120, 120, 40);
+
+        // Button listeners
+        studentButton.addActionListener(e -> {
+            userType = "Student";
+            userTypeFrame.dispose();
+            makeGui(); // go to login screen
+        });
+
+        professorButton.addActionListener(e -> {
+            userType = "Professor";
+            userTypeFrame.dispose();
+            makeGui();
+        });
+
+        userTypeFrame.add(userTypePrompt);
+        userTypeFrame.add(studentButton);
+        userTypeFrame.add(professorButton);
+        userTypeFrame.setVisible(true);
     }
 
     // LOGIN SCREEN
