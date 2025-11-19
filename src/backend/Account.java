@@ -2,21 +2,21 @@ package backend;
 
 public class Account {
     //Unique
-    private String name;
-    //display, not unique
     private String userName;
+    //display, not unique
+    private String displayName;
     private String password;
 
-    public Account(String _name, String _user, String _password)
+    public Account(String _displayName, String _userName, String _password)
     {
-        name = _name;
-        userName = _user;
+        displayName = _displayName;
+        userName = _userName;
         password = _password;
     }
 
-    public String getName() 
+    public String getDisplayName() 
     {
-        return name;
+        return displayName;
     }
 
     public String getPassword() 

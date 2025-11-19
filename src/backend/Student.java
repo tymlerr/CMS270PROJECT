@@ -6,9 +6,9 @@ public class Student extends Account{
 
     private ArrayList<Club> clubs;
 
-    public Student(String _name, String _user, String _password) 
+    public Student(String _displayName, String _userName, String _password) 
     {
-        super(_name, _user, _password);
+        super(_displayName, _userName, _password);
         clubs = new ArrayList<Club>();
     }
 

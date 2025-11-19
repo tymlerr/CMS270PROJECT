@@ -9,27 +9,27 @@ public class AccountManager {
     public static Account getAccountByName(String name)
     {
         for (Account account : accounts) {
-            if(account.getName().equals(name))
+            if(account.getUserName().equals(name))
                 return account;
         }
 
         return null;
     }
 
-    public static Professor addProfessor(String _name, String _user, String _password)
+    public static Professor addProfessor(String _displayName, String _userName, String _password)
     {
-        if(getAccountByName(_name) != null) return null;
+        if(getAccountByName(_userName) != null) return null;
 
-        Professor newProf = new Professor(_name, _user, _password);
+        Professor newProf = new Professor(_displayName, _userName, _password);
         accounts.add(newProf);
         return newProf;
     }
 
-    public static Student addStudent(String _name, String _user, String _password)
+    public static Student addStudent(String _displayName, String _userName, String _password)
     {
-        if(getAccountByName(_name) != null) return null;
+        if(getAccountByName(_userName) != null) return null;
 
-        Student newStudent = new Student(_name, _user, _password);
+        Student newStudent = new Student(_displayName, _userName, _password);
         accounts.add(newStudent);
         return newStudent;
     }

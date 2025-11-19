@@ -1,7 +1,8 @@
 package gui;
 
 import javax.swing.*;
-import java.awt.*;
+
+import gui.MainGUI.ScreenNames;
 
 public class WelcomePanel extends JPanel {
 
@@ -17,10 +18,10 @@ public class WelcomePanel extends JPanel {
         JButton newUserBtn = new JButton("New User");
         newUserBtn.setBounds(200, 220, 200, 50);
 
-        existingBtn.addActionListener(e -> gui.showScreen(MainGUI.LOGIN));
+        existingBtn.addActionListener(e -> gui.showScreen(MainGUI.ScreenNames.login));
 
         newUserBtn.addActionListener(e ->
-                JOptionPane.showMessageDialog(this, "New user registration not implemented yet.")
+            gui.showScreen(ScreenNames.registration)
         );
 
         add(title);

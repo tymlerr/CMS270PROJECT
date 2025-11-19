@@ -4,9 +4,9 @@ public class Professor extends Account {
 
     private Club advisingClub;
 
-    public Professor(String _name, String _user, String _password) 
+    public Professor(String _displayName, String _userName, String _password) 
     {
-        super(_name, _user, _password);
+        super(_displayName, _userName, _password);
     }
 
     public void setAdvisingClub(Club _advisingClub) 

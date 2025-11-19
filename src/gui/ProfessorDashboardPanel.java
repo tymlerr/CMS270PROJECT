@@ -1,18 +1,29 @@
 package gui;
 
 import backend.*;
+import gui.MainGUI.ScreenNames;
 
 import javax.swing.*;
 
 public class ProfessorDashboardPanel extends JPanel {
 
-    public ProfessorDashboardPanel(Professor prof) {
+    public ProfessorDashboardPanel(MainGUI gui, Professor prof) {
         setLayout(null);
 
-        JLabel title = new JLabel("Professor Dashboard - " + prof.getName());
+        JLabel title = new JLabel("Professor Dashboard - " + prof.getDisplayName());
         title.setBounds(20, 20, 400, 40);
 
         Club advising = prof.getAdvisingClub();
+
+        JButton logoutButton = new JButton("Log out");
+        logoutButton.setBounds(420, 10, 150, 50);
+
+        logoutButton.addActionListener(e -> {
+            SessionManager.logOut();
+            gui.showScreen(ScreenNames.welcome);
+        });
+
+        add(logoutButton);
 
         if (advising != null) {
             JLabel clubLabel = new JLabel("You advise: " + advising.getClubName());
@@ -21,7 +32,7 @@ public class ProfessorDashboardPanel extends JPanel {
             DefaultListModel<String> members = new DefaultListModel<>();
 
             for (Student s : advising.getClubMembers()) {
-                members.addElement(s.getName());
+                members.addElement(s.getDisplayName());
             }
 
             JList<String> memberList = new JList<>(members);

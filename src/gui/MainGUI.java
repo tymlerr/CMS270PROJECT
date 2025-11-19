@@ -11,14 +11,14 @@ public class MainGUI {
     CardLayout cardLayout;
     JPanel mainPanel;
 
-    // Logged-in user
-    public static Account currentAccount;
-
     // Panel names
-    public static final String WELCOME = "Welcome";
-    public static final String LOGIN = "Login";
-    public static final String STUDENT_DASH = "StudentDash";
-    public static final String PROFESSOR_DASH = "ProfessorDash";
+    public enum ScreenNames {
+        welcome,
+        login,
+        studentDash,
+        professorDash,
+        registration
+    }
 
     public MainGUI() {
         frame = new JFrame("Rollins Clubs");
@@ -29,32 +29,33 @@ public class MainGUI {
         mainPanel = new JPanel(cardLayout);
 
         // Create screens
-        mainPanel.add(new WelcomePanel(this), WELCOME);
-        mainPanel.add(new LoginPanel(this), LOGIN);
-        // Dashboards are created only after login
+        mainPanel.add(new WelcomePanel(this), ScreenNames.welcome.toString());
+        mainPanel.add(new LoginPanel(this), ScreenNames.login.toString());
+        mainPanel.add(new RegistrationPanel(this), ScreenNames.registration.toString());
 
         frame.add(mainPanel);
         frame.setVisible(true);
     }
 
     // Switch screen
-    public void showScreen(String screen) {
-        cardLayout.show(mainPanel, screen);
+    public void showScreen(ScreenNames screen) {
+        cardLayout.show(mainPanel, screen.toString());
     }
 
     // Create student dashboard after login
     public void loadStudentDashboard(Student stu) {
-        mainPanel.add(new StudentDashboardPanel(stu), STUDENT_DASH);
-        showScreen(STUDENT_DASH);
+        mainPanel.add(new StudentDashboardPanel(this, stu), ScreenNames.studentDash.toString());
+        showScreen(ScreenNames.studentDash);
     }
 
     // Create professor dashboard after login
     public void loadProfessorDashboard(Professor prof) {
-        mainPanel.add(new ProfessorDashboardPanel(prof), PROFESSOR_DASH);
-        showScreen(PROFESSOR_DASH);
+        mainPanel.add(new ProfessorDashboardPanel(this, prof), ScreenNames.professorDash.toString());
+        showScreen(ScreenNames.professorDash);
     }
 
     public static void main(String[] args) {
+        otherStuff.TestData.populate();
         new MainGUI();
     }
 }
