@@ -22,5 +22,9 @@ public class Student extends Account{
     {
         clubs.remove(club);
     }
+    public ArrayList<Club> getClubs() {
+        return clubs;
+    }
+
 
 }
