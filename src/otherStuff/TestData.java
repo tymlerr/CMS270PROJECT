@@ -6,12 +6,12 @@ public class TestData {
 
     public static void populate() {
         // Professors
-        Professor p1 = AccountManager.addProfessor("Alice Smith", "alice", "pass123");
-        Professor p2 = AccountManager.addProfessor("Bob Jones", "bob", "password");
+        Professor p1 = AccountManager.addProfessor("Alice", "alice", "pass123");
+        Professor p2 = AccountManager.addProfessor("Bob", "bob", "password");
 
         // Students
-        Student s1 = AccountManager.addStudent("Charlie Brown", "charlie", "1234");
-        Student s2 = AccountManager.addStudent("Dana White", "dana", "abcd");
+        Student s1 = AccountManager.addStudent("Charlie", "charlie", "1234");
+        Student s2 = AccountManager.addStudent("Dana", "dana", "abcd");
 
         // Clubs
         Club chessClub = new Club("Chess Club", p1);
