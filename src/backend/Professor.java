@@ -1,7 +1,6 @@
 package backend;
 
 public class Professor extends Account {
-
     private Club advisingClub;
 
     public Professor(String _displayName, String _userName, String _password) 
@@ -18,5 +17,4 @@ public class Professor extends Account {
     {
         return advisingClub;
     }
-
 }
