@@ -317,7 +317,7 @@ public class Controller {
             studentDash.setMode(Mode.viewUnjoined);
             studentDash.displayClubs(clubManager.getUnjoinedClubs(stu));
             refreshStudentDash();
-        } else if (loggedIn instanceof Professor prof) {
+        } else {
             showScreen(ScreenNames.professorDash);
             professorDash.displayAs(loggedIn);
             refreshProfessorDash();
