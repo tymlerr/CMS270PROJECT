@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class ClubManager {
     public ArrayList<Club> clubs = new ArrayList<Club>();
     // potential clubs
-    private ArrayList<ClubRequest> requests = new ArrayList<>();
+    public ArrayList<ClubRequest> requests = new ArrayList<>();
 
     public Club getClubByName(String name)
     {
@@ -53,14 +53,20 @@ public class ClubManager {
         return clubRequest.toArray(new ClubRequest[0]);
     }
 
-    public void submitClubRequest(Professor toAdvise, Student sender, String clubName)
+    public ClubRequest submitClubRequest(Professor toAdvise, Student sender, String clubName)
     {
+        if(toAdvise.getAdvisingClub() != null)
+        {
+            return null;
+        }
+
         ClubRequest req = new ClubRequest();
         req.potentialClubName = clubName;
         req.senderStudent = sender;
         req.toAdvise = toAdvise;
 
         requests.add(req);
+        return req;
     }
 
     public boolean acceptRequest(ClubRequest req)

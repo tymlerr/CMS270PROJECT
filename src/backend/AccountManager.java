@@ -17,6 +17,21 @@ public class AccountManager {
         return null;
     }
 
+    public Professor[] getFreeProfessors()
+    {
+        ArrayList<Professor> found = new ArrayList<>();
+
+        for (Account account : accounts) {
+            if(account instanceof Professor prof)
+            {
+                if(prof.getAdvisingClub() == null)
+                    found.add(prof);
+            }
+        }
+
+        return found.toArray(new Professor[0]);
+    }
+
     public Account addAccount(String _displayName, String _userName, String _password, String accountType)
     {
         if(getAccountByUsername(_userName) != null) return null;

@@ -17,4 +17,9 @@ public class Professor extends Account {
     {
         return advisingClub;
     }
+
+    @Override
+    public String toString() {
+        return getDisplayName();
+    }
 }

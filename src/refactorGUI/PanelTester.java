@@ -3,8 +3,6 @@ package refactorGUI;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import backend.ClubManager;
-
 public class PanelTester {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

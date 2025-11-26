@@ -21,11 +21,15 @@ public class Controller {
     JPanel mainPanel;
 
     StudentDashboard studentDash;
+    ProfessorDashboard professorDash;
+    CreateClubRequestPanel clubRequestPanel;
 
     public enum ScreenNames {
         welcome,
         studentDash,
-        registration
+        professorDash,
+        registration,
+        createRequest
     }
 
     public Controller()
@@ -44,9 +48,81 @@ public class Controller {
         frame.add(mainPanel);
         frame.setVisible(true);
 
+        createTestCases();
+
         initWelcomePanel();
         initRegistrationPanel();
         initStudentDash();
+        initCreateRequestPanel();
+        initProfessorDash();
+    }
+
+    private void createTestCases() {
+        Student s1 = (Student)accountManager.addAccount("Demo Student 1", "student1", "pass", "Student");
+        Student s2 = (Student)accountManager.addAccount("Demo Student 2", "student2", "pass", "Student");
+        Student s3 = (Student)accountManager.addAccount("Demo Student 3", "student3", "pass", "Student");
+
+        Professor p1 = (Professor)accountManager.addAccount("Demo Professor 1", "prof1", "pass", "Professor");
+        Professor p2 = (Professor)accountManager.addAccount("Demo Professor 2", "prof2", "pass", "Professor");
+        Professor p3 = (Professor)accountManager.addAccount("Demo Professor 3", "prof3", "pass", "Professor");
+
+        clubManager.submitClubRequest(p1, s1, "Test club 1");
+        clubManager.acceptRequest(clubManager.requests.get(0));
+
+        clubManager.submitClubRequest(p2, s2, "Test club 2");
+        clubManager.acceptRequest(clubManager.requests.get(0));
+
+        clubManager.submitClubRequest(p3, s3, "HORSE1");
+        clubManager.submitClubRequest(p3, s3, "HORSE2");
+        clubManager.submitClubRequest(p3, s3, "HORSE3");
+        clubManager.submitClubRequest(p3, s3, "HORSE4");
+        clubManager.submitClubRequest(p3, s3, "HORSE5");
+        clubManager.submitClubRequest(p3, s3, "HORSE6");
+
+    }
+
+    public void populateRequestView()
+    {
+        if(accountManager.currentlySignedInAccount instanceof Professor prof)
+        {
+            JPanel reqDisplayPanel = professorDash.getReqDisplayPanel();
+            reqDisplayPanel.removeAll();
+
+            for (ClubRequest req : clubManager.getRequestsByProfessor(prof)) {
+                RequestDisplay reqDisplay = new RequestDisplay(req);
+
+                reqDisplay.setAcceptActionListener(e -> onAcceptRequest(req));
+                reqDisplay.setRejectActionListener(e -> onRejectRequest(req));
+
+                reqDisplayPanel.add(reqDisplay);
+            }
+
+            GuiUtils.autoStrutAndCenterChildren(reqDisplayPanel, 5);
+
+            reqDisplayPanel.revalidate();
+            reqDisplayPanel.repaint();
+        }
+    }
+
+    public void onAcceptRequest(ClubRequest req)
+    {
+        boolean success = clubManager.acceptRequest(req);
+
+        if(!success)
+        {
+            onRejectRequest(req);
+            JOptionPane.showMessageDialog(mainPanel, "A club by that name already exists! removing...");
+            return;
+        }
+
+        refreshProfessorDash();
+    }
+
+    public void onRejectRequest(ClubRequest req)
+    {
+        clubManager.requests.remove(req);
+        refreshProfessorDash();
+
     }
 
     public void addScreen(JPanel panel, ScreenNames name)
@@ -65,6 +141,49 @@ public class Controller {
         }
 
         cardLayout.show(mainPanel, screen.toString());
+    }
+
+    private void initProfessorDash() {
+        ProfessorDashboard p = new ProfessorDashboard();
+        professorDash = p;
+        addScreen(p, ScreenNames.professorDash);
+
+        p.setLogoutListener(e -> {
+            showScreen(ScreenNames.welcome);
+            accountManager.logOut();
+        });
+    }
+
+    private void initCreateRequestPanel()
+    {
+        CreateClubRequestPanel c = new CreateClubRequestPanel();
+        addScreen(c, ScreenNames.createRequest);
+        clubRequestPanel = c;
+
+        c.setBackButtonListener(e -> {
+            refreshStudentDash();
+            showScreen(ScreenNames.studentDash);
+        });
+
+        c.setSendRequestButtonListener(e -> {
+            if(GuiUtils.isStringBlankOrSpaces(c.getClubName()))
+            {
+                JOptionPane.showMessageDialog(mainPanel, "Fields cannot be blank!");
+                return;
+            }
+
+            ClubRequest req = clubManager.submitClubRequest(c.getSelectedProfessor(), (Student)accountManager.currentlySignedInAccount, c.getClubName());
+            if(req == null)
+            {
+                JOptionPane.showMessageDialog(mainPanel, "Professor already advising a club!");
+                return;
+            }
+
+            refreshStudentDash();
+            showScreen(ScreenNames.studentDash);
+            JOptionPane.showMessageDialog(mainPanel, "Request Sent!");
+        });
+        
     }
 
     private void initStudentDash() {
@@ -114,6 +233,18 @@ public class Controller {
 
             refreshStudentDash();
         });
+
+        d.setCreateClubListener(e -> {
+            Professor[] freeProfs = accountManager.getFreeProfessors();
+            if(freeProfs.length == 0)
+            {
+                JOptionPane.showMessageDialog(mainPanel, "All professors are already advising a club!");
+                return;
+            }
+
+            clubRequestPanel.populateProfessorChoices(freeProfs);
+            showScreen(ScreenNames.createRequest);
+        });
     }
 
     private void refreshStudentDash()
@@ -127,6 +258,22 @@ public class Controller {
             if(accountManager.currentlySignedInAccount instanceof Student stu)
             {
                 studentDash.displayClubs(stu.getClubs());
+            }
+        }
+    }
+
+    private void refreshProfessorDash()
+    {
+        if(accountManager.currentlySignedInAccount instanceof Professor prof)
+        {
+            Club advising = prof.getAdvisingClub();
+            if(advising == null)
+            {
+                professorDash.switchModes(ProfessorDashboard.Mode.acceptRequests);
+                populateRequestView();
+            } else {
+                professorDash.switchModes(ProfessorDashboard.Mode.advisorView);
+                professorDash.displayAdvisingClub(advising);
             }
         }
     }
@@ -170,6 +317,10 @@ public class Controller {
             studentDash.setMode(Mode.viewUnjoined);
             studentDash.displayClubs(clubManager.getUnjoinedClubs(stu));
             refreshStudentDash();
+        } else if (loggedIn instanceof Professor prof) {
+            showScreen(ScreenNames.professorDash);
+            professorDash.displayAs(loggedIn);
+            refreshProfessorDash();
         }
     }
 
