@@ -58,27 +58,51 @@ public class Controller {
     }
 
     private void createTestCases() {
-        Student s1 = (Student)accountManager.addAccount("Demo Student 1", "student1", "pass", "Student");
-        Student s2 = (Student)accountManager.addAccount("Demo Student 2", "student2", "pass", "Student");
-        Student s3 = (Student)accountManager.addAccount("Demo Student 3", "student3", "pass", "Student");
 
-        Professor p1 = (Professor)accountManager.addAccount("Demo Professor 1", "prof1", "pass", "Professor");
-        Professor p2 = (Professor)accountManager.addAccount("Demo Professor 2", "prof2", "pass", "Professor");
-        Professor p3 = (Professor)accountManager.addAccount("Demo Professor 3", "prof3", "pass", "Professor");
 
-        clubManager.submitClubRequest(p1, s1, "Test club 1");
-        clubManager.acceptRequest(clubManager.requests.get(0));
+        Student stuPalmer = (Student)accountManager.addAccount("Erik Palmer", "palmer", "pass", "Student");
+        Student stuLam = (Student)accountManager.addAccount("Alison Lam", "lam", "pass", "Student");
+        Student stuWolf = (Student)accountManager.addAccount("Laurence Wolf", "wolf", "pass", "Student");
+        Student stuRoy = (Student)accountManager.addAccount("Fred Roy", "roy", "pass", "Student");
+        Student stuWatson = (Student)accountManager.addAccount("Lacy Watson", "watson", "pass", "Student");
+        Student stuBullock = (Student)accountManager.addAccount("Erma Bullock", "bullock", "pass", "Student");
+        Student stuBarron = (Student)accountManager.addAccount("Sally Barron", "barron", "pass", "Student");
 
-        clubManager.submitClubRequest(p2, s2, "Test club 2");
-        clubManager.acceptRequest(clubManager.requests.get(0));
+        Professor profStevens = (Professor)accountManager.addAccount("Prof. Stevens", "stevens", "pass", "Professor");
+        Professor profNovak = (Professor)accountManager.addAccount("Prof. Novak", "novak", "pass", "Professor");
+        Professor profCavarro = (Professor)accountManager.addAccount("Prof. Cavarro", "cavarro", "pass", "Professor");
+        Professor profHawkins = (Professor)accountManager.addAccount("Prof. Hawkins", "hawkins", "pass", "Professor");
+        Professor profSparks = (Professor)accountManager.addAccount("Prof. Sparks", "sparks", "pass", "Professor");
+        Professor profSnow = (Professor)accountManager.addAccount("Prof. Snow", "snow", "pass", "Professor");
+        Professor profRamirez = (Professor)accountManager.addAccount("Prof. Ramirez", "ramirez", "pass", "Professor");
 
-        clubManager.submitClubRequest(p3, s3, "HORSE1");
-        clubManager.submitClubRequest(p3, s3, "HORSE2");
-        clubManager.submitClubRequest(p3, s3, "HORSE3");
-        clubManager.submitClubRequest(p3, s3, "HORSE4");
-        clubManager.submitClubRequest(p3, s3, "HORSE5");
-        clubManager.submitClubRequest(p3, s3, "HORSE6");
+        clubManager.submitClubRequest(profStevens, stuWolf, "C# Appreciation Club");
+        Club cSharp = clubManager.acceptRequest(clubManager.requests.get(0));
+        cSharp.addMember(stuPalmer);
+        cSharp.addMember(stuLam);
+        cSharp.addMember(stuRoy);
+        cSharp.addMember(stuWatson);
+        cSharp.addMember(stuBullock);
+        cSharp.addMember(stuBarron);
 
+        clubManager.submitClubRequest(profNovak, stuPalmer, "Cooking Club");
+        Club cooking = clubManager.acceptRequest(clubManager.requests.get(0));
+        cooking.addMember(stuLam);
+        cooking.addMember(stuRoy);
+        cooking.addMember(stuBullock);
+        cooking.addMember(stuWatson);
+
+        clubManager.submitClubRequest(profCavarro, stuLam, "Robotics Club");
+        Club robotics = clubManager.acceptRequest(clubManager.requests.get(0));
+        robotics.addMember(stuPalmer);
+        robotics.addMember(stuWolf);
+        robotics.addMember(stuBarron);
+
+        clubManager.submitClubRequest(profHawkins, stuLam, "Creative Writing Club");
+        Club writing = clubManager.acceptRequest(clubManager.requests.get(0));
+        writing.addMember(stuLam);
+        writing.addMember(stuBarron);
+        writing.addMember(stuWatson);
     }
 
     public void populateRequestView()
@@ -106,9 +130,9 @@ public class Controller {
 
     public void onAcceptRequest(ClubRequest req)
     {
-        boolean success = clubManager.acceptRequest(req);
+        Club club = clubManager.acceptRequest(req);
 
-        if(!success)
+        if(club == null)
         {
             onRejectRequest(req);
             JOptionPane.showMessageDialog(mainPanel, "A club by that name already exists! removing...");

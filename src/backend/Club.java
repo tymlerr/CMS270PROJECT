@@ -32,6 +32,8 @@ public class Club {
 
     public void addMember(Student student)
     {
+        if(clubMembers.contains(student))
+            return;
         clubMembers.add(student);
         student.addToClub(this);
     }

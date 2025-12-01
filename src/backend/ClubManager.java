@@ -69,18 +69,18 @@ public class ClubManager {
         return req;
     }
 
-    public boolean acceptRequest(ClubRequest req)
+    public Club acceptRequest(ClubRequest req)
     {
         if(req.toAdvise.getAdvisingClub() != null) 
-            return false;
+            return null;
 
         if(getClubByName(req.potentialClubName) != null)
-            return false;
+            return null;
 
         Club newClub = new Club(req.potentialClubName, req.toAdvise);
         newClub.addMember(req.senderStudent);
         clubs.add(newClub);
         clearClubRequestsToProfessor(req.toAdvise);
-        return true;
+        return newClub;
     }
 }
