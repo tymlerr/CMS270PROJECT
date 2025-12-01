@@ -12,6 +12,7 @@ public class Club {
         clubName = name;
         clubAdvisor = advisor;
         clubMembers = new ArrayList<Student>();
+        advisor.setAdvisingClub(this);
     }
 
     public String getClubName()
@@ -32,5 +33,17 @@ public class Club {
     public void addMember(Student student)
     {
         clubMembers.add(student);
+        student.addToClub(this);
+    }
+
+    public void removeMember(Student student)
+    {
+        clubMembers.remove(student);
+        student.removeFromClub(this);
+    }
+
+    @Override
+    public String toString() {
+        return clubName;
     }
 }

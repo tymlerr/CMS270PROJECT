@@ -3,10 +3,11 @@ package backend;
 import java.util.ArrayList;
 
 public class AccountManager {
-    public static ArrayList<Account> accounts = new ArrayList<Account>();
+    public ArrayList<Account> accounts = new ArrayList<Account>();
+    public Account currentlySignedInAccount;
 
     // returns null if none is found
-    public static Account getAccountByName(String name)
+    public Account getAccountByUsername(String name)
     {
         for (Account account : accounts) {
             if(account.getUserName().equals(name))
@@ -16,26 +17,55 @@ public class AccountManager {
         return null;
     }
 
-    public static Professor addProfessor(String _displayName, String _userName, String _password)
+    public Professor[] getFreeProfessors()
     {
-        if(getAccountByName(_userName) != null) return null;
+        ArrayList<Professor> found = new ArrayList<>();
 
-        Professor newProf = new Professor(_displayName, _userName, _password);
-        accounts.add(newProf);
-        return newProf;
+        for (Account account : accounts) {
+            if(account instanceof Professor prof)
+            {
+                if(prof.getAdvisingClub() == null)
+                    found.add(prof);
+            }
+        }
+
+        return found.toArray(new Professor[0]);
     }
 
-    public static Student addStudent(String _displayName, String _userName, String _password)
+    public Account addAccount(String _displayName, String _userName, String _password, String accountType)
     {
-        if(getAccountByName(_userName) != null) return null;
+        if(getAccountByUsername(_userName) != null) return null;
 
-        Student newStudent = new Student(_displayName, _userName, _password);
-        accounts.add(newStudent);
-        return newStudent;
+        if(accountType == "Professor")
+        {
+            Professor newProf = new Professor(_displayName, _userName, _password);
+            accounts.add(newProf);
+            return newProf;
+        } else {
+            Student newStudent = new Student(_displayName, _userName, _password);
+            accounts.add(newStudent);
+            return newStudent;
+        }
     }
 
-    public static void removeAccount(Account account)
+    public void removeAccount(Account account)
     {
         accounts.remove(account);
+    }
+
+    public Account attemptLogin(String user, String pass) {
+        for (Account a : accounts) {
+
+            if (a.getUserName().equals(user) && a.getPassword().equals(pass)) {
+                currentlySignedInAccount = a;
+                return a;
+            }
+        }
+        return null;
+    }
+
+    public void logOut()
+    {
+        currentlySignedInAccount = null;
     }
 }

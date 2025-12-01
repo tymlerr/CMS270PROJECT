@@ -16,9 +16,9 @@ public class GuiUtils {
         label.setPreferredSize(new Dimension(100, 20));
         label.setMaximumSize(new Dimension(100, 20));
 
-        field.setMinimumSize(new Dimension(100, 20));
-        field.setPreferredSize(new Dimension(100, 20));
-        field.setMaximumSize(new Dimension(100, 20));
+        field.setMinimumSize(new Dimension(125, 20));
+        field.setPreferredSize(new Dimension(125, 20));
+        field.setMaximumSize(new Dimension(125, 20));
 
         row.add(Box.createHorizontalGlue());
         row.add(label);

@@ -58,7 +58,7 @@ public class WelcomePanel extends JPanel implements IResetable{
 
     public String getPassword()
     {
-        return passwordField.getPassword().toString();
+        return new String(passwordField.getPassword());
     }
 
     public void reset()

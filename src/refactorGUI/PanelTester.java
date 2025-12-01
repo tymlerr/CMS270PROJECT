@@ -10,11 +10,7 @@ public class PanelTester {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(600, 400);
 
-            // Swap this line to test any panel you want
-            frame.add(new RegistrationPanel());  
-            // frame.add(new DashboardPanel());
-            // frame.add(new AddBookPanel());
-            // frame.add(new AllUsersDisplayPanel());
+            //frame.add(new StudentDashboard(new ClubManager()));  
 
             frame.setVisible(true);
         });

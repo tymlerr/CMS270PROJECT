@@ -22,8 +22,8 @@ public class Student extends Account{
     {
         clubs.remove(club);
     }
-    public ArrayList<Club> getClubs() {
-        return clubs;
+    public Club[] getClubs() {
+        return clubs.toArray(new Club[0]);
     }
 
 
